@@ -1,7 +1,8 @@
 #!usr/bin/python3
-
+from uniplot import plot as plot
 import re
 import numpy as np
+import os
 
 
 def reverseCosCalc(a, b, c):
@@ -33,12 +34,20 @@ def pythagManager(a, b, c):
 # No comments for you you fuckin idiot.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------#
 
+os.system("clear")
+objPoints = input(
+    "The points on your triangle please(format as \"(x1,y1)-(x2,y2)-(x3,y3)\"): ")  # noqa
+objPoints = objPoints.split("-")
+dataVars = [list(map(float, (re.sub("\(|\)|\ ", "", objPoints[x]).split(",")))) for x in range(len(objPoints))]  # noqa Jesus fucking christ what the fuck did i just make?
+locationData = dataVars
+dataVars = pythagManager(dataVars[0], dataVars[1], dataVars[2])
+dataVars = [locationData, dataVars, (reverseCos(dataVars[0], dataVars[1], dataVars[2]))]  # noqa
 
-if (__name__ == "__main__"):
-    objPoints = "(23.7, 2)-(19.17, 7)-(11.11, 13)"
-    objPoints = objPoints.split("-")
-    dataVars = [list(map(float, (re.sub("\(|\)|\ ", "", objPoints[x]).split(",")))) for x in range(len(objPoints))]  # Jesus fucking christ what the fuck did i just make? # noqa
-    locationData = dataVars
-    dataVars = pythagManager(dataVars[0], dataVars[1], dataVars[2])
-    dataVars = [locationData, dataVars, (reverseCos(dataVars[0], dataVars[1], dataVars[2]))] # noqa
-    print(dataVars)
+line1y = [dataVars[0][1], dataVars[1][1]]
+line1x = [dataVars[0][0], dataVars[1][0]]
+line2y = [dataVars[1][1], dataVars[2][1]]
+line2x = [dataVars[1][0], dataVars[2][0]]
+
+plot([line1y,line2y], [line1x,line2x], lines=True)
+
+print(dataVars)
